@@ -17,6 +17,10 @@ app.get('/', (req, res) => {
   res.render('pages/index.ejs', {name: ' Max'})
 })
 
+app.get('/home', (req, res) => {
+  res.render('pages/home.ejs')
+})
+
 
 app.get('/messages', async (req, res) => {
   let messages = await messageModel.getAllMessages()
@@ -30,7 +34,7 @@ app.post('/', async (req, res) => {
   
   await dBModule.storeElement(person)
 
-  res.render('pages/index.ejs', {name: ' ' + req.body.name})
+  res.redirect('/home')
 })
 
 app.post('/messages', async (req, res) => {
