@@ -2,6 +2,7 @@ const express = require('express')
 const dBModule = require('./dBModule')
 const personModel = require('./PersonModel')
 const messageModel = require('./MessageModel')
+const Product = require('./models/product')
 const app = express()
 const port = 3000
 
@@ -14,24 +15,30 @@ app.use(express.static(clientDir))
 app.set('view engine', 'ejs')
 
 app.get('/', (req, res) => {
-  res.render('pages/index.ejs', {name: ' Max'})
+  res.render('pages/index.ejs', {
+    name: ' Max'
+  })
 })
 
-app.get('/home', (req, res) => {
-  res.render('pages/home.ejs')
+app.get('/home', async (req, res) => {
+  var docs = await Product.find({});
+  res.render('shop/home.ejs', { products: docs });
 })
+
 
 
 app.get('/messages', async (req, res) => {
   let messages = await messageModel.getAllMessages()
-  res.render("pages/messages.ejs", { names: messages.reverse() })
+  res.render("pages/messages.ejs", {
+    names: messages.reverse()
+  })
 })
 
 
 app.post('/', async (req, res) => {
 
   let person = personModel.createPerson(req.body.name, req.body.password)
-  
+
   await dBModule.storeElement(person)
 
   res.redirect('/home')
@@ -40,7 +47,7 @@ app.post('/', async (req, res) => {
 app.post('/messages', async (req, res) => {
 
   let message = messageModel.createMessage(req.body.email, req.body.message)
-  
+
   await dBModule.storeElement(message)
 
   res.redirect('/messages')
@@ -48,4 +55,4 @@ app.post('/messages', async (req, res) => {
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}!`)
-}) 
+})
