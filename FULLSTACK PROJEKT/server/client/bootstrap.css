@@ -86,7 +86,7 @@ html {
 
 body {
   font-family: "Poppins", sans-serif;
-  height: 100vh;
+  height: auto;
 }
 
 a {
@@ -724,6 +724,10 @@ mark,
   display: inline-block;
 }
 
+.fab {
+  color: black;
+}
+
 .list-inline-item:not(:last-child) {
   margin-right: 0.5rem;
 }
@@ -828,6 +832,7 @@ pre code {
   padding-left: 15px;
   margin-right: auto;
   margin-left: auto;
+  
 }
 
 @media (min-width: 576px) {
