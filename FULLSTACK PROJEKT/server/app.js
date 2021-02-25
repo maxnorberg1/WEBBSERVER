@@ -1,8 +1,11 @@
-const express = require('express')
-const dBModule = require('./dBModule')
-const personModel = require('./PersonModel')
-const messageModel = require('./MessageModel')
-const Product = require('./models/product')
+const express = require('express');
+const dBModule = require('./dBModule');
+const personModel = require('./PersonModel');
+const messageModel = require('./MessageModel');
+const Product = require('./models/product');
+const User = require('./models/user');
+
+
 const app = express()
 const port = 3000
 
@@ -12,7 +15,10 @@ app.use(express.json())
 app.use(express.urlencoded())
 app.use(express.static(clientDir))
 
+
+
 app.set('view engine', 'ejs')
+
 
 app.get('/', (req, res) => {
   res.render('pages/index.ejs', {
@@ -25,6 +31,9 @@ app.get('/home', async (req, res) => {
   res.render('shop/home.ejs', { products: docs });
 })
 
+app.get('/user/signup', (req, res) => {
+  res.render('user/signup.ejs', {});
+});
 
 
 app.get('/messages', async (req, res) => {
