@@ -1,9 +1,10 @@
 const express = require('express');
 const dBModule = require('./dBModule');
 const personModel = require('./PersonModel');
-const messageModel = require('./MessageModel');
 const Product = require('./models/product');
 const User = require('./models/user');
+var session = require('express-session');
+
 
 
 const app = express()
@@ -19,14 +20,16 @@ app.use(express.static(clientDir))
 
 app.set('view engine', 'ejs')
 
+app.use(session({secret: 'mySecret', resave: false, saveUninitialized: false}));
 
-app.get('/', (req, res) => {
+ 
+app.get('/login', (req, res) => {
   res.render('pages/index.ejs', {
     name: ' Max'
   })
 })
 
-app.get('/home', async (req, res) => {
+app.get('/', async (req, res) => {
   var docs = await Product.find({});
   res.render('shop/home.ejs', { products: docs });
 })
@@ -51,15 +54,6 @@ app.post('/', async (req, res) => {
   await dBModule.storeElement(person)
 
   res.redirect('/home')
-})
-
-app.post('/messages', async (req, res) => {
-
-  let message = messageModel.createMessage(req.body.email, req.body.message)
-
-  await dBModule.storeElement(message)
-
-  res.redirect('/messages')
 })
 
 app.listen(port, () => {
